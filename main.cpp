@@ -83,6 +83,8 @@ Camera camera(glm::vec3(0, 0, 3.0f), glm::radians(0.0f), glm::radians(180.0f), g
 void processInput(GLFWwindow* window);
 //鼠标回调函数声明
 void mouse_callback(GLFWwindow* window,double xPos,double yPos);
+//滑轮回调函数声明
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 int main() {
 	//初始化
 	glfwInit();
@@ -111,7 +113,8 @@ int main() {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	//注册鼠标事件回调函数
 	glfwSetCursorPosCallback(window, mouse_callback);
-
+	//注册滑轮事件回调函数
+	glfwSetScrollCallback(window, scroll_callback);
 	//设置绘图区域
 	glViewport(0, 0, 800, 600);
 	//设置背面剔除 逆时针绘制为正面
@@ -280,4 +283,9 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	yoffset *= sensitivity;
 
 	camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.speedZ = yoffset*100;
 }
